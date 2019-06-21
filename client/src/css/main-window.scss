@@ -27,7 +27,6 @@
 		cursor: pointer;
 		transition-duration: 0.25s;
 		background-color: transparent;
-
 		&:hover {
 			background-color: rgba($main-color, 0.2);
 		}
@@ -43,6 +42,4 @@
 		border-bottom: solid 1px $main-color;
 		@include input-placeholder(rgba($main-color, 0.8));
 	}
-
 }
-
