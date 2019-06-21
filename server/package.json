@@ -1,0 +1,35 @@
+{
+  "name": "react-VideoChat",
+  "description": "Server for react-VideoChat app",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "scripts": {
+    "start": "node main.js",
+    "watch": "nodemon main.js"
+  },
+  "main": "main.js",
+  "dependencies": {
+    "bluebird": "3.5.5",
+    "express": "4.17.1",
+    "socket.io": "2.2.0"
+  },
+  "engines": {
+    "node": "10.15.3",
+    "yarn": "1.13.0"
+  },
+  "author": {
+    "name": "Maaz Jawaid",
+    "email": "maazjawaid28@gmail.com",
+    "url": "https://github.com/maaz28"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "5.16.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.17.3",
+    "nodemon": "1.19.1"
+  }
+}
