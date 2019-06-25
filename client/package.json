@@ -4,6 +4,7 @@
   "description": "",
   "dependencies": {
     "@babel/core": "7.4.5",
+    "@babel/plugin-proposal-class-properties": "7.4.4",
     "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "7.0.0",
     "@material-ui/core": "4.1.1",
@@ -14,6 +15,7 @@
     "css-loader": "2.1.1",
     "expose-loader": "0.7.5",
     "file-loader": "4.0.0",
+    "firebase": "6.2.2",
     "font-awesome": "4.7.0",
     "html-webpack-plugin": "3.2.0",
     "lodash": "4.17.11",
@@ -34,6 +36,7 @@
     "webrtc-adapter": "7.2.4"
   },
   "devDependencies": {
+    "babel-eslint": "10.0.2",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "2.17.3",

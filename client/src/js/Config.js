@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import {
-  Router,
   Route,
-  HashRouter
+  HashRouter,
+  BrowserRouter,
+  Redirect
 } from 'react-router-dom';
 import { LoginProvider } from '../config/contextConfig';
 import Dashboard from './Dashboard/Dashboard';
+import Login from './Components/Login';
+import Signup from './Components/Signup';
 
-const Config = () => {
-  return (
-    <HashRouter>
-      <Main />
-    </HashRouter>
-  );
-}
+const Config = () => (
+  <Main />
+);
 
 class Main extends Component {
   constructor(props) {
@@ -27,10 +26,14 @@ class Main extends Component {
     this.isLogin = this.isLogin.bind(this);
   }
 
-  isLogin() {
+  isLogin = () => {
+    console.log("In isLogin fn", this.state)
     if (this.state.login) {
+      console.log("In /If/ isLogin fn", this.state)
       sessionStorage.setItem('user', false);
-    } else { sessionStorage.setItem('user', true); }
+    } else {
+      console.log("In /else/ isLogin fn", this.state)      
+      sessionStorage.setItem('user', true); }
     this.setState(state => ({
       login: !state.login
     }));
@@ -40,17 +43,19 @@ class Main extends Component {
   render() {
     return (
       <LoginProvider value={this.state}>
-        <Router>
+        <BrowserRouter>
           {
             (this.state.login) ? (
               <Route exact path="/" component={Dashboard} />
             ) : (
                 <>
-                  <Route exact path="/" component={Dashboard} />
+                  {/* <Route exact path="/" component={<Redirect to='/login' />} /> */}
+                  <Route exact path="/" component={Login} />
+                  <Route exact path="/signup" component={Signup} />
                 </>
               )
           }
-        </Router>
+        </BrowserRouter>
       </LoginProvider>
     );
   }

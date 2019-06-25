@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import _ from 'lodash';
-import Dashboard from './Dashboard/Dashboard';
+import Config from './Config';
 
 class App extends Component {
   render() {
     return (
-      <Dashboard/>
+      <Config />
     );
   }
 }
