@@ -15,6 +15,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { List } from '@material-ui/core';
 import MainListItems from './MainListItems';
 import VideoCall from '../Components/VideoCall';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItem from '@material-ui/core/ListItem';
+import Avatar from '@material-ui/core/Avatar';
 import { logout, getUsers} from '../../config/firebaseFunctions'
 import { LoginConsumer } from '../../config/contextConfig.js';
 
@@ -105,7 +109,8 @@ class Dashboard extends React.Component {
     super(props);
 
     this.state = {
-      open: true
+      open: true,
+      data:[]
     };
 
     this.handleDrawerClose = this.handleDrawerClose.bind(this)
@@ -138,10 +143,12 @@ class Dashboard extends React.Component {
     this.getUsersOnLoad()
   }
 
-  getUsersOnLoad = async ()=>{
+  getUsersOnLoad = ()=>{
     try{
-      const res = await getUsers()
-      console.log(res)
+      const res = getUsers()
+      res.then((result)=>{
+        this.setState({data:result})
+      })
     }
     catch(e){
       console.log(e)
@@ -150,7 +157,8 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    const {data} = this.state;
+    console.log('data from render ===>',data);
     return (
       <div className={classes.root}>
 
@@ -203,7 +211,20 @@ class Dashboard extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List>{MainListItems}</List>
+          <List>
+            {
+              data.map(item => {
+                return (
+                  <ListItem button>
+                    <ListItemIcon>
+                      <Avatar>{item.name.slice(0, 1).toUpperCase()}</Avatar>
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItem>
+                )
+              })
+            }
+          </List>
           <Divider />
         </Drawer>
         <main className={classes.content}>

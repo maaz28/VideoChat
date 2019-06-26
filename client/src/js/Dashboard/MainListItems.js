@@ -1,49 +1,60 @@
-import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import Avatar from '@material-ui/core/Avatar';
+// import React from 'react';
+// import ListItem from '@material-ui/core/ListItem';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemText from '@material-ui/core/ListItemText';
+// import ListSubheader from '@material-ui/core/ListSubheader';
+// import DashboardIcon from '@material-ui/icons/Dashboard';
+// import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+// import PeopleIcon from '@material-ui/icons/People';
+// import BarChartIcon from '@material-ui/icons/BarChart';
+// import LayersIcon from '@material-ui/icons/Layers';
+// import AssignmentIcon from '@material-ui/icons/Assignment';
+// import Avatar from '@material-ui/core/Avatar';
+// import { getUsers } from '../../config/firebaseFunctions'
 
-const mainListItems = (
-  <div>
-    <ListItem button>
-      <ListItemIcon>
-        <Avatar>K</Avatar>
-      </ListItemIcon>
-      <ListItemText primary="Kane Williamson" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <Avatar>J</Avatar>
-      </ListItemIcon>
-      <ListItemText primary="John Doe" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <Avatar>R</Avatar>
-      </ListItemIcon>
-      <ListItemText primary="Rabada" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <Avatar>S</Avatar>
-      </ListItemIcon>
-      <ListItemText primary="Sultan" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <Avatar>M</Avatar>
-      </ListItemIcon>
-      <ListItemText primary="Mitchell Starc" />
-    </ListItem>
-  </div>
-);
+// class mainListItems extends Component{
+//   constructor(){
+//     super();
+//     this.state={
+//       data:[]
+//     }
+//   }
 
-export default mainListItems;
+//   componentDidMount() {
+//     this.getUsersOnLoad()
+//   }
+
+//   getUsersOnLoad = () => {
+//     try {
+//       const res = getUsers()
+//       this.setState({ data: res })
+//     }
+//     catch (e) {
+//       console.log(e)
+//     }
+//   }
+//   render(){
+//     const {data} = this.state;
+//     console.log(data)
+//     return(
+//       <div>
+//         {
+//           data.map(item=>{
+//             return( 
+//                 <ListItem button>
+//                   <ListItemIcon>
+//                     <Avatar>{item.name.slice(0,1)}</Avatar>
+//                   </ListItemIcon>
+//                   <ListItemText primary={item.name} />
+//                 </ListItem>
+//             )
+//           })
+//         }
+
+//       </div>
+//     )
+//   }
+// }
+  
+
+// export default mainListItems;

@@ -92,7 +92,11 @@ const getUsers = () => {
     firebase.database().ref('users')
     .once('value',data=>{
       let userData = data.val()
-      resolve(userData)
+      let dataArray=[];
+      for(let key in userData){
+        dataArray.push(userData[key])
+      }
+      resolve(dataArray)
     })
     .then(()=>{
       console.log('success')
