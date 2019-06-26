@@ -5,6 +5,20 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import Input from './Input'
 
 class Chat extends Component {
+    constructor(){
+        super();
+        this.state={
+            text:''
+        }
+    }
+
+    handleChange = (e) => {
+        let msg = e.target.value;
+        this.setState({text:msg})
+    }
+
+    
+
     render() {
         let chatWindow = {
             height: '74vh',
@@ -35,9 +49,9 @@ class Chat extends Component {
 
                 </div>
                 <div style={chatInput} >
-                    <Input />
+                    <Input value={this.state.text} onChange={this.handleChange} placeholder='Type Message...' />
                 </div>
-                <button type='submit' onClick={()=>this.addToMsg()} style={buttonStyle} >
+                <button type='submit' onClick={() => this.props.sendMesg(this.state.text)} style={buttonStyle} >
                     <FontAwesomeIcon icon={ faPaperPlane }/>
                 </button>
             </div>

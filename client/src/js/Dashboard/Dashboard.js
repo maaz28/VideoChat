@@ -22,6 +22,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { logout, getUsers} from '../../config/firebaseFunctions'
 import { LoginConsumer } from '../../config/contextConfig.js';
 import Chat from '../Components/Chat'
+import * as firebase from 'firebase'
 
 const drawerWidth = 240;
 
@@ -112,7 +113,8 @@ class Dashboard extends React.Component {
     this.state = {
       open: true,
       data:[],
-      msgToSnd:''
+      msgToSndUid:'',
+      userUid:''
     };
 
     this.handleDrawerClose = this.handleDrawerClose.bind(this)
@@ -143,6 +145,12 @@ class Dashboard extends React.Component {
 
   componentDidMount(){
     this.getUsersOnLoad()
+    this.getUserUid()
+  }
+
+  getUserUid = () => {
+    let uid = sessionStorage.getItem('userUid')
+    this.setState({userUid:uid})
   }
 
   getUsersOnLoad = ()=>{
@@ -158,8 +166,38 @@ class Dashboard extends React.Component {
   }
 
   showUserMsgs = (uid) => {
-    this.setState({msgToSnd:uid})
-    
+    const {userUid} = this.state
+    this.setState({msgToSndUid:uid})
+    firebase.database().ref('chats').child(userUid).child(uid)
+    .on('value',data=>{
+      let userData = data.val();
+      console.log(userData)
+    })
+  }
+
+  sendMesg = (message) => {
+    const {userUid,msgToSndUid} = this.state;
+    let time = firebase.database.ServerValue.TIMESTAMP
+    const messageObj = {
+      sender: userUid,
+      reciever: msgToSndUid,
+      message,
+      time
+    }
+    console.log('userUid ===>',userUid)
+    console.log('msgToSndUid===> ', msgToSndUid)
+    firebase.database().ref('chats').child(userUid).child(msgToSndUid).push(messageObj)
+      .then(() => {
+        firebase.database().ref('chats').child(msgToSndUid).child(userUid).push(messageObj)
+        .then(()=>{})
+        .catch((e)=>{
+          console.log(e)
+        })
+       })
+      .catch((error) => {
+        console.log(error)
+      })
+
   }
 
   render() {
@@ -238,7 +276,7 @@ class Dashboard extends React.Component {
           <div className={classes.appBarSpacer} />
           <Grid container >
             <Grid item sx={12} sm={6} md={6} lg={6} >
-              <Chat />
+              <Chat sendMesg={this.sendMesg} />
             </Grid>
             <Grid item sx={12} sm={6} md={6} lg={6} >
               <VideoCall />
