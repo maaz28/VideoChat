@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { List } from '@material-ui/core';
+import { List, Grid } from '@material-ui/core';
 import MainListItems from './MainListItems';
 import VideoCall from '../Components/VideoCall';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -21,6 +21,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
 import { logout, getUsers} from '../../config/firebaseFunctions'
 import { LoginConsumer } from '../../config/contextConfig.js';
+import Chat from '../Components/Chat'
 
 const drawerWidth = 240;
 
@@ -110,7 +111,8 @@ class Dashboard extends React.Component {
 
     this.state = {
       open: true,
-      data:[]
+      data:[],
+      msgToSnd:''
     };
 
     this.handleDrawerClose = this.handleDrawerClose.bind(this)
@@ -153,6 +155,11 @@ class Dashboard extends React.Component {
     catch(e){
       console.log(e)
     }
+  }
+
+  showUserMsgs = (uid) => {
+    this.setState({msgToSnd:uid})
+    
   }
 
   render() {
@@ -215,7 +222,7 @@ class Dashboard extends React.Component {
             {
               data.map(item => {
                 return (
-                  <ListItem button>
+                  <ListItem button onClick={()=>this.showUserMsgs(item.uid)} >
                     <ListItemIcon>
                       <Avatar>{item.name.slice(0, 1).toUpperCase()}</Avatar>
                     </ListItemIcon>
@@ -229,7 +236,14 @@ class Dashboard extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-          <VideoCall />
+          <Grid container >
+            <Grid item sx={12} sm={6} md={6} lg={6} >
+              <Chat />
+            </Grid>
+            <Grid item sx={12} sm={6} md={6} lg={6} >
+              <VideoCall />
+            </Grid>
+          </Grid>
         </main>
       </div>
     );

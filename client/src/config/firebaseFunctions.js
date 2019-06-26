@@ -44,6 +44,7 @@ const login = (email, password, ev) => {
         console.log('logged in')
         resolve(user)
         console.log(user.user.uid)
+        sessionStorage.setItem('userUid',user.user.uid)
         ev()
       })
       .catch((e) => {
