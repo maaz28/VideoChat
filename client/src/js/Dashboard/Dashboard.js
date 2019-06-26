@@ -15,7 +15,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { List } from '@material-ui/core';
 import MainListItems from './MainListItems';
 import VideoCall from '../Components/VideoCall';
-
+import { logout, getUsers} from '../../config/firebaseFunctions'
+import { LoginConsumer } from '../../config/contextConfig.js';
 
 const drawerWidth = 240;
 
@@ -119,6 +120,33 @@ class Dashboard extends React.Component {
     this.setState({ open: false });
   }
 
+  logoutBtnHandler = (isLogin) => {
+    try{
+      const res = logout()
+      res.then(() => {
+        isLogin();
+        this.props.history.push('/');
+        console.log('promise Works');
+      })
+    }
+    catch(e){
+      console.log(e)
+    }
+  }
+
+  componentDidMount(){
+    this.getUsersOnLoad()
+  }
+
+  getUsersOnLoad = async ()=>{
+    try{
+      const res = await getUsers()
+      console.log(res)
+    }
+    catch(e){
+      console.log(e)
+    }
+  }
 
   render() {
     const { classes } = this.props;
@@ -152,9 +180,14 @@ class Dashboard extends React.Component {
             >
               VideoChat
             </Typography>
-            <IconButton color="inherit" title="Logout">
+            <LoginConsumer>
+              {({ isLogin }) => (
+                <IconButton onClick={() => this.logoutBtnHandler(isLogin)} color="inherit" title="Logout">
               <LogoutIcon />
             </IconButton>
+              )}
+
+            </LoginConsumer>
           </Toolbar>
         </AppBar>
         <Drawer

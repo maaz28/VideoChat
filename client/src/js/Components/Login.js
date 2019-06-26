@@ -133,7 +133,7 @@ class Login extends Component {
       });
       try {
         const res = login(this.state.email, this.state.password, ev);
-        this.props.history.push('/addData');
+        this.props.history.push('/');
         // this.props.submitHandler(obj);
       } catch (e) {
         this.setState({

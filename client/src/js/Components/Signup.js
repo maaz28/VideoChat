@@ -141,7 +141,7 @@ class Signup extends Component {
         error: false
       });
       try {
-        const res = signup(this.state.email, this.state.password);
+        const res = signup(this.state.email, this.state.password,this.state.name);
         res.then(() => {
           isLogin();
           this.props.history.push('/');

@@ -13,13 +13,22 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-const signup = (email, password) => {
+const signup = (email, password,name) => {
   return new Promise((resolve, reject) => {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((user) => {
-        // console.log(ev)
+        console.log(user)
         console.log('Signup successfull');
-        resolve(user);
+        let obj = {
+          email,
+          name,
+          uid: user.user.uid
+        }
+        firebase.database().ref('users').child(user.user.uid).set(obj)
+        .then(()=>{
+          console.log('user added to database')
+          resolve(user);
+        })
       })
       .catch((e) => {
         const mess = e.message;
@@ -44,14 +53,18 @@ const login = (email, password, ev) => {
   })
 }
 
-const logout = (ev) => {
-  firebase.auth().signOut()
-    .then(() => {
-      ev()
-    })
-    .catch((e) => {
-      console.log(e.message)
-    })
+const logout = () => {
+  return new Promise((resolve, reject)=>{
+    firebase.auth().signOut()
+      .then((user) => {
+        resolve(user)
+      })
+      .catch((e) => {
+        console.log(e.message)
+        reject({ message: mess })
+      })
+  })
+ 
 }
 
 const sendRequest = (uid, data, count, address) => {
@@ -74,11 +87,29 @@ const getRequests = (uid) => {
   })
 }
 
+const getUsers = () => {
+  return new Promise((resolve, reject)=>{
+    firebase.database().ref('users')
+    .once('value',data=>{
+      let userData = data.val()
+      resolve(userData)
+    })
+    .then(()=>{
+      console.log('success')
+    })
+    .catch((e)=>{
+      console.log(e.message)
+      reject({ message: mess })
+    })
+  })
+}
+
 export {
   signup,
   login,
   // currentUser,
   getRequests,
   sendRequest,
+  getUsers,
   logout
 }
