@@ -141,12 +141,18 @@ class Signup extends Component {
         error: false
       });
       try {
-        const res = signup(this.state.email, this.state.password,this.state.name);
+        const res = signup(this.state.email, this.state.password, this.state.name);
         res.then(() => {
           isLogin();
           this.props.history.push('/');
           console.log('promise Works');
-        });
+        })
+          .catch(err => {
+            this.setState({
+              error : true,
+              errorMessage : err.message
+            })
+          })
       } catch (e) {
         this.setState({
           error: true,
@@ -217,17 +223,17 @@ class Signup extends Component {
             }
             <LoginConsumer>
               {({ isLogin }) => (
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    onClick={() => { this.submitBtnHandler(isLogin) }}
-                  >
-                    Sign up
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={() => { this.submitBtnHandler(isLogin) }}
+                >
+                  Sign up
             </Button>
-                )}
+              )}
 
             </LoginConsumer>
           </form>
@@ -236,10 +242,10 @@ class Signup extends Component {
           </div>
           <br />
           <p style={{ fontStyle: 'italic' }}>
-Already have an Account?
+            Already have an Account?
 {' '}
-<Link to='/'>Signin</Link>
-</p>
+            <Link to='/'>Signin</Link>
+          </p>
         </Paper>
       </main>
     );

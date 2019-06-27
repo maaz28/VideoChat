@@ -1,11 +1,8 @@
 ## React-VideoChat
-Demo app: https://morning-escarpment-67980.herokuapp.com/  
-
-<img align="right" width="360" src="https://raw.githubusercontent.com/nguymin4/react-VideoChat/master/docs/ss1.jpg"  alt =" " style="border: solid 1px #d4d4d4" />
+Demo app: https://videochatcall.herokuapp.com/
   
-Video call to your friend without registering. 
+Video Chat to your friend. 
 Simply send your friend your auto-generated unique ID to make the call.  
-Everytime you open a new tab, the server gives you a totally different unique ID.
 
 **Development**
 
@@ -16,10 +13,6 @@ cd server && yarn watch
 # Running webpack-dev-server
 cd client && yarn watch
 ```
-
-**Deployment**
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/nguymin4/react-VideoChat/tree/production)
 
 **Front-end Technologies:**
 - React

@@ -13,7 +13,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Divider } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-// import { validEmail, validPassword } from '../../utils/helper.js'
+import { validEmail, validPassword } from '../../utils/helper.js'
 import { LoginConsumer } from '../../config/contextConfig.js';
 import { login } from '../../config/firebaseFunctions';
 
@@ -133,8 +133,16 @@ class Login extends Component {
       });
       try {
         const res = login(this.state.email, this.state.password, ev);
-        this.props.history.push('/');
-        // this.props.submitHandler(obj);
+        res.then(() => {
+          isLogin();
+          this.props.history.push('/');
+        })
+          .catch(err => {
+            this.setState({
+              error: true,
+              errorMessage: err.message
+            })
+          })
       } catch (e) {
         this.setState({
           error: true,

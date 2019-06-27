@@ -28,6 +28,7 @@ const signup = (email, password,name) => {
         .then(()=>{
           console.log('user added to database')
           resolve(user);
+          sessionStorage.setItem('email', email)
         })
       })
       .catch((e) => {
@@ -45,6 +46,7 @@ const login = (email, password, ev) => {
         resolve(user)
         console.log(user.user.uid)
         sessionStorage.setItem('userUid',user.user.uid)
+        sessionStorage.setItem('email', email)
         ev()
       })
       .catch((e) => {

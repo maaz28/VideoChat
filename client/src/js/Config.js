@@ -49,7 +49,6 @@ class Main extends Component {
               <Route exact path="/" component={Dashboard} />
             ) : (
                 <>
-                  {/* <Route exact path="/" component={<Redirect to='/login' />} /> */}
                   <Route exact path="/" component={Login} />
                   <Route exact path="/signup" component={Signup} />
                 </>

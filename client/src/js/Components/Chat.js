@@ -1,58 +1,91 @@
 import React, { Component } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Divider } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import Input from './Input'
+import RenderChat from './RenderChat';
+import * as firebase from 'firebase'
+
 
 class Chat extends Component {
-    constructor(){
+    constructor() {
         super();
-        this.state={
-            text:''
+        this.state = {
+            text: '',
+            recipientUid: '',
+            messages: null,
+            userUid: sessionStorage.getItem('userUid')
         }
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        console.log(nextProps, "componentWillReceiveProps");
+        if (nextProps.recipient) {
+            this.showUserMsgs(nextProps.recipient)
+        }
+        // this.setState({
+        //     recipientUid: nextProps.recipient
+        // })
+    }
+
+    showUserMsgs = (uid) => {
+        const { userUid } = this.state
+        firebase.database().ref('chats').child(userUid).child(uid)
+            .on('value', data => {
+                let userData = data.val();
+                console.log(userData, "USER DATA");
+                this.setState({
+                    messages: userData
+                })
+            })
     }
 
     handleChange = (e) => {
         let msg = e.target.value;
-        this.setState({text:msg})
+        this.setState({ text: msg })
     }
 
-    
+
 
     render() {
         let chatWindow = {
             height: '74vh',
-            width: '100%', 
+            width: '100%',
             marginBottom: '1vh'
         }
         let chatInput = {
-            width:'calc(100% - 50px)',
-            display:'inline-block',
-            backgroundColor:'white',
-            paddingTop:'13px'
+            width: 'calc(100% - 50px)',
+            display: 'inline-block',
+            backgroundColor: 'white',
+            paddingTop: '13px'
         }
-        let buttonStyle = { 
-            width: '50px', 
-            padding: '12px 0px', 
-            border: 'none', 
-            position: 'relative', 
-            top: '-5px', 
-            left: '-4px', 
-            backgroundColor: '#1a7bf7', 
-            color: 'white' 
+        let buttonStyle = {
+            width: '50px',
+            padding: '12px 0px',
+            border: 'none',
+            position: 'relative',
+            top: '-5px',
+            left: '-4px',
+            backgroundColor: '#1a7bf7',
+            color: 'white'
         }
 
 
         return (
-            <div style={{backgroundColor:'white',width:'100%'}} >
+            <div style={{ backgroundColor: 'white', width: '100%' }}>
                 <div style={chatWindow} >
-
+                    <div style={{ color: "black", padding : '20px' }}>{this.props.recipientName}</div>
+                    <Divider />
+                    <RenderChat
+                        messages={this.state.messages}
+                        currentUserUid={this.state.userUid}
+                    />
                 </div>
                 <div style={chatInput} >
                     <Input value={this.state.text} onChange={this.handleChange} placeholder='Type Message...' />
                 </div>
                 <button type='submit' onClick={() => this.props.sendMesg(this.state.text)} style={buttonStyle} >
-                    <FontAwesomeIcon icon={ faPaperPlane }/>
+                    <FontAwesomeIcon icon={faPaperPlane} />
                 </button>
             </div>
         );

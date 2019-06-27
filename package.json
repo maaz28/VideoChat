@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nguymin4/react-VideoChat.git"
+    "url": "git+https://github.com/maaz28/VideoChat"
   },
   "engines": {
     "node": "10.15.3",
@@ -19,9 +19,9 @@
   "author": "Minh Son Nguyen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nguymin4/react-VideoChat/issues"
+    "url": "https://github.com/maaz28/VideoChat"
   },
-  "homepage": "https://github.com/nguymin4/react-VideoChat#readme",
+  "homepage": "https://github.com/maaz28/VideoChat#readme",
   "dependencies": {
     "react-router-dom": "^5.0.1"
   }

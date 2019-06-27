@@ -9,18 +9,19 @@ const style = theme => ({
         border: '1px solid lightgrey',
         padding: theme.spacing.unit * 2,
         margin: '15px 0px 0px 15px',
-        maxWidth: '80%'
+        maxWidth: '80%',
+        color : 'black'
     }
 })
 
 const Recieved = (props) => {
     const { classes } = props;
-    const { msg } = props.data
+    const { message } = props;
     return (
         <>
             <div>
                 <div style={{ display: 'inline-block' }} className={classes.msgStyle} >
-                    {msg}
+                    {message}
                 </div>
             </div>
         </>

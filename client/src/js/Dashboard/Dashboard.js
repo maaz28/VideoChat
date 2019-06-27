@@ -19,7 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
-import { logout, getUsers} from '../../config/firebaseFunctions'
+import { logout, getUsers } from '../../config/firebaseFunctions'
 import { LoginConsumer } from '../../config/contextConfig.js';
 import Chat from '../Components/Chat'
 import * as firebase from 'firebase'
@@ -112,9 +112,11 @@ class Dashboard extends React.Component {
 
     this.state = {
       open: true,
-      data:[],
-      msgToSndUid:'',
-      userUid:''
+      data: [],
+      msgToSndUid: '',
+      userUid: '',
+      emailAddress: '',
+      recipientName: ''
     };
 
     this.handleDrawerClose = this.handleDrawerClose.bind(this)
@@ -130,7 +132,7 @@ class Dashboard extends React.Component {
   }
 
   logoutBtnHandler = (isLogin) => {
-    try{
+    try {
       const res = logout()
       res.then(() => {
         isLogin();
@@ -138,45 +140,46 @@ class Dashboard extends React.Component {
         console.log('promise Works');
       })
     }
-    catch(e){
+    catch (e) {
       console.log(e)
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getUsersOnLoad()
     this.getUserUid()
   }
 
   getUserUid = () => {
     let uid = sessionStorage.getItem('userUid')
-    this.setState({userUid:uid})
+    let email = sessionStorage.getItem('email')
+    this.setState({
+      userUid: uid,
+      emailAddress: email
+    })
   }
 
-  getUsersOnLoad = ()=>{
-    try{
+  getUsersOnLoad = () => {
+    try {
       const res = getUsers()
-      res.then((result)=>{
-        this.setState({data:result})
+      res.then((result) => {
+        this.setState({ data: result })
       })
     }
-    catch(e){
+    catch (e) {
       console.log(e)
     }
   }
 
-  showUserMsgs = (uid) => {
-    const {userUid} = this.state
-    this.setState({msgToSndUid:uid})
-    firebase.database().ref('chats').child(userUid).child(uid)
-    .on('value',data=>{
-      let userData = data.val();
-      console.log(userData)
+  setRecipientUid = (uid, name) => {
+    this.setState({
+      msgToSndUid: uid,
+      recipientName: name
     })
   }
 
   sendMesg = (message) => {
-    const {userUid,msgToSndUid} = this.state;
+    const { userUid, msgToSndUid } = this.state;
     let time = firebase.database.ServerValue.TIMESTAMP
     const messageObj = {
       sender: userUid,
@@ -184,16 +187,16 @@ class Dashboard extends React.Component {
       message,
       time
     }
-    console.log('userUid ===>',userUid)
+    console.log('userUid ===>', userUid)
     console.log('msgToSndUid===> ', msgToSndUid)
     firebase.database().ref('chats').child(userUid).child(msgToSndUid).push(messageObj)
       .then(() => {
         firebase.database().ref('chats').child(msgToSndUid).child(userUid).push(messageObj)
-        .then(()=>{})
-        .catch((e)=>{
-          console.log(e)
-        })
-       })
+          .then(() => { })
+          .catch((e) => {
+            console.log(e)
+          })
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -202,8 +205,8 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const {data} = this.state;
-    console.log('data from render ===>',data);
+    const { data } = this.state;
+    console.log('data from render ===>', data);
     return (
       <div className={classes.root}>
 
@@ -231,13 +234,13 @@ class Dashboard extends React.Component {
               noWrap
               className={classes.title}
             >
-              VideoChat
+              Email : {this.state.emailAddress}
             </Typography>
             <LoginConsumer>
               {({ isLogin }) => (
                 <IconButton onClick={() => this.logoutBtnHandler(isLogin)} color="inherit" title="Logout">
-              <LogoutIcon />
-            </IconButton>
+                  <LogoutIcon />
+                </IconButton>
               )}
 
             </LoginConsumer>
@@ -258,9 +261,9 @@ class Dashboard extends React.Component {
           <Divider />
           <List>
             {
-              data.map(item => {
+              data.map((item, i) => {
                 return (
-                  <ListItem button onClick={()=>this.showUserMsgs(item.uid)} >
+                  <ListItem button onClick={() => this.setRecipientUid(item.uid, item.name)} key={i} >
                     <ListItemIcon>
                       <Avatar>{item.name.slice(0, 1).toUpperCase()}</Avatar>
                     </ListItemIcon>
@@ -276,7 +279,11 @@ class Dashboard extends React.Component {
           <div className={classes.appBarSpacer} />
           <Grid container >
             <Grid item sx={12} sm={6} md={6} lg={6} >
-              <Chat sendMesg={this.sendMesg} />
+              <Chat
+                sendMesg={this.sendMesg}
+                recipient={this.state.msgToSndUid}
+                recipientName={this.state.recipientName}
+              />
             </Grid>
             <Grid item sx={12} sm={6} md={6} lg={6} >
               <VideoCall />
