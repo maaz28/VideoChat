@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/maaz28/VideoChat#readme",
   "dependencies": {
-    "react-router-dom": "^5.0.1"
+    "react-router-dom": "^5.0.1",
+    "react-scrollbar": "0.5.6"
   }
 }

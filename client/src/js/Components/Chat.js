@@ -23,9 +23,6 @@ class Chat extends Component {
         if (nextProps.recipient) {
             this.showUserMsgs(nextProps.recipient)
         }
-        // this.setState({
-        //     recipientUid: nextProps.recipient
-        // })
     }
 
     showUserMsgs = (uid) => {
@@ -70,9 +67,8 @@ class Chat extends Component {
             color: 'white'
         }
 
-
         return (
-            <div style={{ backgroundColor: 'white', width: '100%' }}>
+            <div style={{ backgroundColor: '#e8e8e8', width: '100%', borderRadius : '16px' }}>
                 <div style={chatWindow} >
                     <div style={{ color: "black", padding : '20px' }}>{this.props.recipientName}</div>
                     <Divider />
