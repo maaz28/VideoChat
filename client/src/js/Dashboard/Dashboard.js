@@ -22,6 +22,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { logout, getUsers } from '../../config/firebaseFunctions'
 import { LoginConsumer } from '../../config/contextConfig.js';
 import Chat from '../Components/Chat'
+import Input from '../Components/Input'
 import * as firebase from 'firebase'
 
 const drawerWidth = 240;
@@ -116,7 +117,9 @@ class Dashboard extends React.Component {
       msgToSndUid: '',
       userUid: '',
       emailAddress: '',
-      recipientName: ''
+      recipientName: '',
+      searchData: [],
+      toSearch: ''
     };
 
     this.handleDrawerClose = this.handleDrawerClose.bind(this)
@@ -144,6 +147,11 @@ class Dashboard extends React.Component {
       console.log(e)
     }
   }
+
+  // handleChange = (e) => {
+  //   let msg = e.target.value;
+  //   this.setState({ toSearch: msg })
+  // }
 
   componentDidMount() {
     this.getUsersOnLoad()
@@ -178,6 +186,15 @@ class Dashboard extends React.Component {
     })
   }
 
+  searchInList = (val) => {
+    const toSearch = val.target.value;
+    // const toSearch = this.state.search;
+    const searchData = this.state.data.filter(item => {
+      return item.name.substring(0, toSearch.length).toLowerCase() === toSearch.toLowerCase()
+    })
+    this.setState({ toSearch, searchData })
+  }
+
   sendMesg = (message) => {
     const { userUid, msgToSndUid } = this.state;
     let time = firebase.database.ServerValue.TIMESTAMP
@@ -205,8 +222,9 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { data } = this.state;
     console.log('data from render ===>', data);
+    const { data, toSearch, searchData } = this.state;
+    const list = toSearch ? searchData : data
     return (
       <div className={classes.root}>
 
@@ -259,9 +277,10 @@ class Dashboard extends React.Component {
             </IconButton>
           </div>
           <Divider />
+          <Input value={this.state.toSearch} name='toSearch' onChange={this.searchInList} placeholder='Search...' />
           <List>
             {
-              data.map((item, i) => {
+              list.map((item, i) => {
                 return (
                   <ListItem button onClick={() => this.setRecipientUid(item.uid, item.name)} key={i} >
                     <ListItemIcon>

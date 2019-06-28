@@ -60,6 +60,7 @@ const logout = () => {
   return new Promise((resolve, reject)=>{
     firebase.auth().signOut()
       .then((user) => {
+        sessionStorage.removeItem('userUid')
         resolve(user)
       })
       .catch((e) => {

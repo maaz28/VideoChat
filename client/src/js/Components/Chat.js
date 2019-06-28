@@ -42,7 +42,10 @@ class Chat extends Component {
         this.setState({ text: msg })
     }
 
-
+    sndMesg = () => {
+        this.props.sendMesg(this.state.text)
+        this.setState({ text: '' })
+    }
 
     render() {
         let chatWindow = {
@@ -68,9 +71,9 @@ class Chat extends Component {
         }
 
         return (
-            <div style={{ backgroundColor: '#e8e8e8', width: '100%', borderRadius : '16px' }}>
+            <div style={{ backgroundColor: '#e8e8e8', width: '100%', borderRadius: '16px' }}>
                 <div style={chatWindow} >
-                    <div style={{ color: "black", padding : '20px' }}>{this.props.recipientName}</div>
+                    <div style={{ color: "black", padding: '20px' }}>{this.props.recipientName}</div>
                     <Divider />
                     <RenderChat
                         messages={this.state.messages}
@@ -80,7 +83,7 @@ class Chat extends Component {
                 <div style={chatInput} >
                     <Input value={this.state.text} onChange={this.handleChange} placeholder='Type Message...' />
                 </div>
-                <button type='submit' onClick={() => this.props.sendMesg(this.state.text)} style={buttonStyle} >
+                <button type='submit' onClick={() => this.sndMesg()} style={buttonStyle} >
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </button>
             </div>
