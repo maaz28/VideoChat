@@ -154,8 +154,8 @@ class Dashboard extends React.Component {
   // }
 
   componentDidMount() {
-    this.getUsersOnLoad()
     this.getUserUid()
+    this.getUsersOnLoad()
   }
 
   getUserUid = () => {
@@ -168,10 +168,14 @@ class Dashboard extends React.Component {
   }
 
   getUsersOnLoad = () => {
+    let uid = sessionStorage.getItem('userUid')
     try {
       const res = getUsers()
       res.then((result) => {
-        this.setState({ data: result })
+        console.log(result)
+        console.log('uid ===>', uid)
+        const newMessage = result.filter(item => item.uid === uid)
+        console.log('new', newMessage)
       })
     }
     catch (e) {
@@ -209,7 +213,13 @@ class Dashboard extends React.Component {
     firebase.database().ref('chats').child(userUid).child(msgToSndUid).push(messageObj)
       .then(() => {
         firebase.database().ref('chats').child(msgToSndUid).child(userUid).push(messageObj)
-          .then(() => { })
+          .then(() => {
+            firebase.database().ref('users').child(msgToSndUid).child('newMessage').push(userUid)
+              .then(() => { })
+              .catch((e) => {
+                console.log(e)
+              })
+          })
           .catch((e) => {
             console.log(e)
           })
