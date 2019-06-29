@@ -186,7 +186,7 @@ class Dashboard extends React.Component {
         const newUsers = users.map(item => {
           for (let key in messageList) {
             if (messageList[key] === item.uid) {
-              item.newMessage = true
+              item.isNewMessage = true
               item.key = key
             }
           }
