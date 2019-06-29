@@ -171,7 +171,7 @@ class Dashboard extends React.Component {
         for (let key in userData) {
           dataArray.push(userData[key])
         }
-      
+
         console.log(dataArray)
         console.log('uid ===>', uid)
         const users = dataArray.filter(item => item.uid !== uid)
@@ -195,10 +195,10 @@ class Dashboard extends React.Component {
         this.setState({ data: newUsers })
         console.log('newUsers===>', newUsers)
       })
-    
+
   }
 
-  setRecipientUid = (uid, key,name) => {
+  setRecipientUid = (uid, key, name) => {
     this.setState({
       msgToSndUid: uid,
       recipientName: name
@@ -309,7 +309,7 @@ class Dashboard extends React.Component {
             {
               list.map((item, i) => {
                 return (
-                  <ListItem button onClick={() => this.setRecipientUid(item.uid, item.key,item.name)} key={i} >
+                  <ListItem button onClick={() => this.setRecipientUid(item.uid, item.key, item.name)} key={i} >
                     <ListItemIcon>
                       <Avatar>{item.name.slice(0, 1).toUpperCase()}</Avatar>
                     </ListItemIcon>
