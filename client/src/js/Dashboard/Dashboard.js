@@ -147,12 +147,7 @@ class Dashboard extends React.Component {
       console.log(e)
     }
   }
-
-  // handleChange = (e) => {
-  //   let msg = e.target.value;
-  //   this.setState({ toSearch: msg })
-  // }
-
+  
   componentDidMount() {
     this.getUsersOnLoad()
     this.getUserUid()
