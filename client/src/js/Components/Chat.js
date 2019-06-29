@@ -6,7 +6,6 @@ import Input from './Input'
 import RenderChat from './RenderChat';
 import * as firebase from 'firebase'
 
-
 class Chat extends Component {
     constructor() {
         super();
@@ -14,6 +13,7 @@ class Chat extends Component {
             text: '',
             recipientUid: '',
             messages: null,
+            error: false,
             userUid: sessionStorage.getItem('userUid')
         }
     }
@@ -21,6 +21,9 @@ class Chat extends Component {
     componentWillReceiveProps = (nextProps) => {
         console.log(nextProps, "componentWillReceiveProps");
         if (nextProps.recipient) {
+            this.setState({
+                error: false
+            })
             this.showUserMsgs(nextProps.recipient)
         }
     }
@@ -43,6 +46,11 @@ class Chat extends Component {
     }
 
     sndMesg = () => {
+        if (this.props.recipient === '') {
+            this.setState({
+                error: true
+            })
+        }
         this.props.sendMesg(this.state.text)
         this.setState({ text: '' })
     }
@@ -71,22 +79,29 @@ class Chat extends Component {
         }
 
         return (
-            <div style={{ backgroundColor: '#e8e8e8', width: '100%', borderRadius: '16px' }}>
-                <div style={chatWindow} >
-                    <div style={{ color: "black", padding: '20px' }}>{this.props.recipientName}</div>
-                    <Divider />
-                    <RenderChat
-                        messages={this.state.messages}
-                        currentUserUid={this.state.userUid}
-                    />
+            <>
+                <div style={{ backgroundColor: '#e8e8e8', width: '100%', borderRadius: '16px' }}>
+                    <div style={chatWindow} >
+                        <div style={{ color: "black", padding: '20px' }}>{this.props.recipientName}</div>
+                        <Divider />
+                        <RenderChat
+                            messages={this.state.messages}
+                            currentUserUid={this.state.userUid}
+                        />
+                    </div>
+                    <div style={chatInput} >
+                        <Input value={this.state.text} onChange={this.handleChange} placeholder='Type Message...' />
+                    </div>
+                    <button type='submit' onClick={() => this.sndMesg()} style={buttonStyle} >
+                        <FontAwesomeIcon icon={faPaperPlane} />
+                    </button>
                 </div>
-                <div style={chatInput} >
-                    <Input value={this.state.text} onChange={this.handleChange} placeholder='Type Message...' />
-                </div>
-                <button type='submit' onClick={() => this.sndMesg()} style={buttonStyle} >
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                </button>
-            </div>
+                {
+                    (this.state.error) ? (
+                        <div style={{ color: "red", margin: "8px", fontWeight: "bold" }}>Please select recipient first</div>
+                    ) : (null)
+                }
+            </>
         );
     }
 }

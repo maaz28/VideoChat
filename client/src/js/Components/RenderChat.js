@@ -11,7 +11,7 @@ const RenderChat = ({ messages, currentUserUid }) => {
     <Scrollbars style={{ width: "100%", height: "85%" }}>
       {
         (messages == null) ? (
-          <p style={{ color: "black", padding: '20px' }}>No Messages to display</p>
+          <p style={{ color: "black", padding: '20px' }}>No chat history, Start a conversation now !</p>
         ) : (
             Object.keys(messages).map((item, i) => (
               (messages[item].sender === currentUserUid) ? (
