@@ -147,7 +147,7 @@ class Dashboard extends React.Component {
       console.log(e)
     }
   }
-  
+
   componentDidMount() {
     this.getUserUid()
     this.getUsersOnLoad()
@@ -164,25 +164,47 @@ class Dashboard extends React.Component {
 
   getUsersOnLoad = () => {
     let uid = sessionStorage.getItem('userUid')
-    try {
-      const res = getUsers()
-      res.then((result) => {
-        console.log(result)
+    firebase.database().ref('users')
+      .on('value', data => {
+        let userData = data.val()
+        let dataArray = [];
+        for (let key in userData) {
+          dataArray.push(userData[key])
+        }
+      
+        console.log(dataArray)
         console.log('uid ===>', uid)
-        const newMessage = result.filter(item => item.uid === uid)
-        console.log('new', newMessage)
+        const users = dataArray.filter(item => item.uid !== uid)
+        console.log('new', users)
+        let messageList;
+        for (let key in dataArray) {
+          if (dataArray[key].uid === uid) {
+            // console.log('result===>', result[key].newMessage)
+            messageList = { ...dataArray[key].newMessage }
+          }
+        }
+        const newUsers = users.map(item => {
+          for (let key in messageList) {
+            if (messageList[key] === item.uid) {
+              item.newMessage = true
+              item.key = key
+            }
+          }
+          return item;
+        });
+        this.setState({ data: newUsers })
+        console.log('newUsers===>', newUsers)
       })
-    }
-    catch (e) {
-      console.log(e)
-    }
+    
   }
 
-  setRecipientUid = (uid, name) => {
+  setRecipientUid = (uid, key,name) => {
     this.setState({
       msgToSndUid: uid,
       recipientName: name
     })
+    let useruid = sessionStorage.getItem('userUid')
+    firebase.database().ref('users').child(useruid).child('newMessage').child(key).remove()
   }
 
   searchInList = (val) => {
@@ -287,11 +309,11 @@ class Dashboard extends React.Component {
             {
               list.map((item, i) => {
                 return (
-                  <ListItem button onClick={() => this.setRecipientUid(item.uid, item.name)} key={i} >
+                  <ListItem button onClick={() => this.setRecipientUid(item.uid, item.key,item.name)} key={i} >
                     <ListItemIcon>
                       <Avatar>{item.name.slice(0, 1).toUpperCase()}</Avatar>
                     </ListItemIcon>
-                    <ListItemText primary={item.name} />
+                    <ListItemText primary={item.name} secondary={item.newMessage ? " new" : null} />
                   </ListItem>
                 )
               })
