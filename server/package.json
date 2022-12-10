@@ -13,7 +13,7 @@
   "main": "main.js",
   "dependencies": {
     "bluebird": "3.5.5",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "socket.io": "2.2.0"
   },
   "engines": {
